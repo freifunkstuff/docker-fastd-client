@@ -81,4 +81,4 @@ fi
 echo "0" > /proc/sys/net/ipv6/conf/all/disable_ipv6
 echo "1" > /proc/sys/net/ipv6/conf/all/forwarding
 
-exec fastd --config /config/fastd/fastd.conf
+exec fastd --config /config/fastd/fastd.conf --status-socket /config/fastd/fastd.status

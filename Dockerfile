@@ -5,5 +5,6 @@ RUN apt-get update && \
       net-tools inetutils-ping procps \
       radvd radvdump tcpdump ndisc6 ipv6calc \
       bash curl
+VOLUME /config
 ADD entrypoint.sh /entrypoint.sh
 CMD /entrypoint.sh
