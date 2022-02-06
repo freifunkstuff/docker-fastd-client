@@ -25,7 +25,7 @@ on up "
   ip link set up dev mesh-vpn
   batctl if add mesh-vpn
   ifconfig bat0 up
-  $( -z "${IPV6_PREFIX}" || echo "radvd -C /config/radvd.conf" )
+  $( test -z "${IPV6_PREFIX}" || echo "radvd -C /config/radvd.conf" )
 ";
 include peers from "peers";
 EOF
@@ -72,5 +72,10 @@ mkdir -p /dev/net
 if [ ! -c /dev/net/tun ]; then
     mknod /dev/net/tun c 10 200
 fi
+
+# Setup sysctl
+
+echo "0" > /proc/sys/net/ipv6/conf/all/disable_ipv6
+echo "1" > /proc/sys/net/ipv6/conf/all/forwarding
 
 exec fastd --config /config/fastd/fastd.conf
