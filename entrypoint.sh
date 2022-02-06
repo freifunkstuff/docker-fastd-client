@@ -25,7 +25,8 @@ on up "
   ip link set up dev mesh-vpn
   batctl if add mesh-vpn
   ifconfig bat0 up
-  $( test -z "${IPV6_PREFIX}" || echo "radvd -C /config/radvd.conf" )
+  $( test -z "${IPV6_PREFIX}" || echo "/config/static_v6.sh" )
+  radvd -C /config/radvd.conf
 ";
 include peers from "peers";
 EOF
@@ -54,17 +55,19 @@ EOF
   i=$(( i + 1 ))
 done
 
-if [ ! -z "${IPV6_PREFIX}" ]; then
 cat << EOF > "/config/radvd.conf"
-interface bat0
-{
-    AdvSendAdvert on;
-    prefix ${IPV6_PREFIX} {
-        AdvOnLink on;
-        AdvAutonomous on;		
-	};
+interface bat0 {
+    AdvSendAdvert off;
 };
 EOF
+
+if [ ! -z "${IPV6_PREFIX}" ]; then
+cat << EOF > "/config/static_v6.sh"
+MAC=\$( cat /sys/class/net/bat0/address )
+IPV6=\$( ipv6calc --action prefixmac2ipv6 --in prefix+mac --out ipv6addr ${IPV6_PREFIX} \${MAC})
+ip -6 addr add \${IPV6} dev bat0
+EOF
+chmod 0755 /config/static_v6.sh
 fi
 
 # create tun device
