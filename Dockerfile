@@ -4,7 +4,8 @@ RUN apt-get update && \
       fastd batctl iproute2 \
       net-tools inetutils-ping procps \
       radvd radvdump tcpdump ndisc6 ipv6calc \
-      bash curl
+      bash curl socat jq
 VOLUME /config
 ADD entrypoint.sh /entrypoint.sh
+ADD healthcheck.sh /healthcheck.sh
 CMD /entrypoint.sh
