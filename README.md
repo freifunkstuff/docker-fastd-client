@@ -14,7 +14,9 @@ Umgebungsvariablen:
 * `FASTD_LOG_LEVEL` (default: info)
 * `IPV6_PREFIX` (optional): Prefix für radvd, nötig um hosts im Netz über ihre nicht-link-lokale IPv6 anzupingen. z.B. `fdef:ffc0:7030::/64`
 
+Der Container benötigt die Berechtigung `NET_ADMIN`, um tun/tap devices zu verwenden.
+
 Um IPv6 zu unterstützen, müssen für den Container die folgenden SysCtls gesetzt sein:
 
-`net.ipv6.conf.all.disable_ipv6=0`
-`net.ipv6.conf.all.forwarding=1`
+* `net.ipv6.conf.all.disable_ipv6=0`
+* `net.ipv6.conf.all.forwarding=1`

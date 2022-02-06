@@ -67,4 +67,10 @@ interface bat0
 EOF
 fi
 
+# create tun device
+mkdir -p /dev/net
+if [ ! -c /dev/net/tun ]; then
+    mknod /dev/net/tun c 10 200
+fi
+
 exec fastd --config /config/fastd/fastd.conf
